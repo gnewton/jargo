@@ -10,10 +10,16 @@ It returns a pointer to a Manifest (map[string]string) which is the key:values p
 
     func GetJarInfo(filename string) (error, *JarInfo)
 
-* GetJarInfo extracts various info from a Java JAR file
+GetJarInfo extracts various info from a Java JAR file:
 * It extracts the Manifest (like GetManifest)
 * It extracts an array of the filenames in the JAR file
-* It returns a pointer to a JarInfo struct
+* It returns a pointer to a JarInfo struct:
+```
+type JarInfo struct {
+	*Manifest
+	Files []string
+}
+```
 
 ###Example Usage###
 Using Lucene analyzer jar file from: http://central.maven.org/maven2/org/apache/lucene/lucene-analyzers-stempel/5.0.0/lucene-analyzers-stempel-5.0.0.jar
