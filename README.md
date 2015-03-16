@@ -56,3 +56,10 @@ Output:
 
 &{Manifest:0xc20804c018 Files:[META-INF/ META-INF/MANIFEST.MF META-INF/services/ org/ org/apache/ org/apache/lucene/ org/apache/lucene/analysis/ org/apache/lucene/analysis/pl/ org/apache/lucene/analysis/stempel/ org/egothor/ org/egothor/stemmer/ META-INF/services/org.apache.lucene.analysis.util.TokenFilterFactory org/apache/lucene/analysis/pl/PolishAnalyzer$DefaultsHolder.class org/apache/lucene/analysis/pl/PolishAnalyzer.class org/apache/lucene/analysis/pl/stemmer_20000.tbl org/apache/lucene/analysis/pl/stopwords.txt org/apache/lucene/analysis/stempel/StempelFilter.class org/apache/lucene/analysis/stempel/StempelPolishStemFilterFactory.class org/apache/lucene/analysis/stempel/StempelStemmer.class org/egothor/stemmer/Cell.class org/egothor/stemmer/Compile.class org/egothor/stemmer/Diff.class org/egothor/stemmer/DiffIt.class org/egothor/stemmer/Gener.class org/egothor/stemmer/Lift.class org/egothor/stemmer/MultiTrie.class org/egothor/stemmer/MultiTrie2.class org/egothor/stemmer/Optimizer.class org/egothor/stemmer/Optimizer2.class org/egothor/stemmer/Reduce$Remap.class org/egothor/stemmer/Reduce.class org/egothor/stemmer/Row.class org/egothor/stemmer/Trie$StrEnum.class org/egothor/stemmer/Trie.class META-INF/LICENSE.txt META-INF/NOTICE.txt]}
 ```
+
+###License###
+```
+The MIT License (MIT)
+Copyright (c) 2015 Glen Newton gnewton
+```
+See LICENSE file.
