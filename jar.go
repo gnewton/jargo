@@ -18,6 +18,8 @@ type JarInfo struct {
 
 const MANIFEST_FULL_NAME = "META-INF/MANIFEST.MF"
 
+// GetManifest extracts the manifest info from a Java JAR file
+// It returns a pointer to a Manifest (map[string]string) which is the key:values pairs from the META-INF/MANIFEST.MF file
 func GetManifest(filename string) (error, *Manifest) {
 	err, jar := jmake(filename, false)
 	if err != nil {
@@ -26,6 +28,10 @@ func GetManifest(filename string) (error, *Manifest) {
 	return nil, jar.Manifest
 }
 
+// GetJarInfo extracts various info from a Java JAR file
+// It extracts the Manifest (like GetManifest)
+// It extracts an array of the filenames in the JAR file
+// It returns a pointer to a JarInfo struct
 func GetJarInfo(filename string) (error, *JarInfo) {
 	return jmake(filename, true)
 }
