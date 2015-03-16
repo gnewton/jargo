@@ -4,32 +4,29 @@ import (
 	"archive/zip"
 	"bufio"
 	"bytes"
-	"fmt"
 	"io"
 	"log"
 	"strings"
 )
 
-type Manifest struct {
-	ManifestMap map[string]string
-}
+type Manifest map[string]string
 
 type JarInfo struct {
-	Manifest
+	*Manifest
 	Files []string
 }
 
 const MANIFEST_FULL_NAME = "META-INF/MANIFEST.MF"
 
-func MakeManifest(filename string) (error, *Manifest) {
+func GetManifest(filename string) (error, *Manifest) {
 	err, jar := jmake(filename, false)
 	if err != nil {
 		return err, nil
 	}
-	return nil, &jar.Manifest
+	return nil, jar.Manifest
 }
 
-func MakeJarInfo(filename string) (error, *JarInfo) {
+func GetJarInfo(filename string) (error, *JarInfo) {
 	return jmake(filename, true)
 }
 
@@ -57,7 +54,6 @@ func jmake(filename string, fullJar bool) (error, *JarInfo) {
 			jar.Files = append(jar.Files, f.Name)
 		}
 		if f.Name == MANIFEST_FULL_NAME {
-			fmt.Println("***************")
 			rc, err := f.Open()
 			if err != nil {
 				log.Fatal(err)
@@ -91,14 +87,12 @@ func jmake(filename string, fullJar bool) (error, *JarInfo) {
 			rc.Close()
 		}
 	}
-	jar.ManifestMap = makeManifestMap(lines)
-
-	fmt.Println("NumFiles")
+	jar.Manifest = makeManifestMap(lines)
 	return nil, jar
 }
 
-func makeManifestMap(lines []string) (error map[string]string) {
-	manifestMap := make(map[string]string)
+func makeManifestMap(lines []string) (error *Manifest) {
+	manifestMap := make(Manifest)
 
 	for _, line := range lines {
 		i := strings.Index(line, ":")
@@ -109,5 +103,5 @@ func makeManifestMap(lines []string) (error map[string]string) {
 		value := strings.TrimSpace(line[i+1:])
 		manifestMap[key] = value
 	}
-	return manifestMap
+	return &manifestMap
 }
