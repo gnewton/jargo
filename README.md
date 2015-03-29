@@ -1,7 +1,12 @@
 jargo
 ======
 jargo is a simple library allowing access to information contained in a Java JAR file.
+
+
+
 It is a simple wrapper to the zip libraries.
+
+[godocs](http://godoc.org/github.com/gnewton/jargo)
 
 It has two functions:
 
