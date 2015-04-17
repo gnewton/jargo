@@ -41,22 +41,23 @@ func GetJarInfo(filename string) (*JarInfo, error) {
 
 func readFromFile(filename string, fullJar bool) (*JarInfo, error) {
 	var err error
-	file, err := os.Open(filename)
-	if err != nil {
+	var file *os.File
+	var fi os.FileInfo
+	var r *zip.Reader
+
+	if file, err = os.Open(filename); err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	fi, err2 := file.Stat()
-	if err2 != nil {
-		return nil, err2
+	if fi, err = file.Stat(); err != nil {
+		return nil, err
 	}
 
-	fileReader, err3 := zip.NewReader(file, fi.Size())
-	if err != nil {
-		return nil, err3
+	if r, err = zip.NewReader(file, fi.Size()); err != nil {
+		return nil, err
 	}
-	return readFromReader(fileReader, fullJar)
+	return readFromReader(r, fullJar)
 }
 
 func readFromReader(r *zip.Reader, fullJar bool) (*JarInfo, error) {
