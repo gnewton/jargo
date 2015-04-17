@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"io"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -22,7 +23,7 @@ const MANIFEST_FULL_NAME = "META-INF/MANIFEST.MF"
 // It takes as parameter the path to the jar file of interest
 // It returns a pointer to a Manifest (map[string]string) which is the key:values pairs from the META-INF/MANIFEST.MF file
 func GetManifest(filename string) (*Manifest, error) {
-	jar, err := jmake(filename, false)
+	jar, err := readFromFile(filename, false)
 	if err != nil {
 		return nil, err
 	}
@@ -35,17 +36,31 @@ func GetManifest(filename string) (*Manifest, error) {
 // It extracts an array of the filenames in the JAR file
 // It returns a pointer to a JarInfo struct
 func GetJarInfo(filename string) (*JarInfo, error) {
-	return jmake(filename, true)
+	return readFromFile(filename, true)
 }
 
-func jmake(filename string, fullJar bool) (*JarInfo, error) {
-	r, err := zip.OpenReader(filename)
-	if err != nil {
-		log.Println(err)
+func readFromFile(filename string, fullJar bool) (*JarInfo, error) {
+	var err error
+	var file *os.File
+	var fi os.FileInfo
+	var r *zip.Reader
+
+	if file, err = os.Open(filename); err != nil {
 		return nil, err
 	}
-	defer r.Close()
+	defer file.Close()
 
+	if fi, err = file.Stat(); err != nil {
+		return nil, err
+	}
+
+	if r, err = zip.NewReader(file, fi.Size()); err != nil {
+		return nil, err
+	}
+	return readFromReader(r, fullJar)
+}
+
+func readFromReader(r *zip.Reader, fullJar bool) (*JarInfo, error) {
 	var (
 		part   []byte
 		prefix bool
@@ -97,7 +112,7 @@ func jmake(filename string, fullJar bool) (*JarInfo, error) {
 		}
 	}
 	jar.Manifest = makeManifestMap(lines)
-	return jar, err
+	return jar, nil
 }
 
 func makeManifestMap(lines []string) *Manifest {
